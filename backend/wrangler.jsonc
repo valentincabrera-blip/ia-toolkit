@@ -40,7 +40,7 @@
       "GEMINI_MODELOS": "gemini-3.6-flash,gemini-3.5-flash,gemini-flash-latest",
       "MAX_PASOS": "8",
       "MOTOR": "propio"
-    }
+    },
   },
 
   // Variables no secretas. Las secretas (GEMINI_API_KEY, CLAVE_APROBACION) NO van aquí: se escriben en el
@@ -60,7 +60,7 @@
 
   // ── Clase 8: el disparador. Descomentar (y agregar una coma al final del bloque "vars") para que el agente
   //    corra solo todos los días a las 09:30 de Chile (12:30 UTC).
-  // "triggers": { "crons": ["30 12 * * *"] },
+   "triggers": { "crons": ["30 12 * * *"] },
 
   // ── Clase 8: el RAG propio vive en Neon; la cadena de conexión es el secreto DATABASE_URL (no va aquí).
   //    Se agrega en el panel de Cloudflare, igual que GEMINI_API_KEY. Ver docs/PASO_A_PASO_CLASE_8.md.
