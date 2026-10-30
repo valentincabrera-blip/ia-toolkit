@@ -30,6 +30,19 @@ a Jules.
 o un pull request: [docs/FLUJO_GIT.md](docs/FLUJO_GIT.md). Cómo pedirle cambios a Jules:
 [docs/JULES.md](docs/JULES.md).
 
+## Clase 8: tu RAG
+
+Tu agente aprende a buscar por **significado** (no solo por palabras) en una base de datos que construyes tú,
+gratis, en Neon. Guía con capturas: [docs/PASO_A_PASO_CLASE_8.md](docs/PASO_A_PASO_CLASE_8.md).
+
+| # | Paso | Punto de control: abre esto | Debe verse |
+|---|---|---|---|
+| 1 | **Sync fork** → **Update branch** en tu fork | `github.com/<tu-usuario>/ia-toolkit` | "This branch is up to date with sil7en/ia-toolkit:main" |
+| 2 | **Neon**: New project → copiar la cadena de conexión | consola de Neon | Una cadena que empieza con `postgresql://` |
+| 3 | **Cloudflare**: secreto `DATABASE_URL` (como `GEMINI_API_KEY`) | `https://ia-toolkit.<tu-subdominio>.workers.dev/` | `"rag": "local"` y la nota "Neon conectado pero vacío" |
+| 4 | **Indexar**: abre `/indexar?clave=<tu clave de aprobación>` | esa misma URL | `"ok": true`, cuántos trozos y vectores, `"regiones": 16` |
+| 5 | **Comparar**: `/evaluar?via=local` y `/evaluar?via=vector` | las dos URL, lado a lado | El mejor fragmento y su fuente por pregunta, en cada búsqueda |
+
 ## Los tres lugares que vas a editar
 
 1. **El objetivo del agente**: `backend/src/agente/objetivo.md`, el bloque *"Lo que el equipo editorial quiere
@@ -54,6 +67,9 @@ plantilla de issue "Nueva herramienta".
 | La portada dice "Falta la variable NEXT_PUBLIC_API_URL" | La variable no está en Vercel | Vercel → Settings → Environment Variables → agregarla → Deployments → ⋯ → Redeploy |
 | Vercel falla diciendo que falta `vercel.json` | Se apretó Deploy en la pantalla de *Services* | Importar de nuevo y elegir **Import single project** en la fila `frontend` |
 | La portada dice "No pude hablar con el backend en …" | La URL está mal escrita o el backend no está desplegado | Abrir esa URL; debe responder `"estado": "en línea"`. Sin barra final |
+| `/indexar` dice "Falta el secreto DATABASE_URL" | El secreto no está o tiene otro nombre | Cloudflare → Settings → Runtime variables and secrets → `DATABASE_URL` como Secret |
+| `/indexar` responde 401 | La clave no coincide con `CLAVE_APROBACION` | Usa la misma frase con que apruebas borradores |
+| La primera búsqueda tarda unos segundos | Neon se duerme tras 5 minutos sin uso | Nada: la siguiente es rápida |
 | `/correr` responde 409 | Ya hay una corrida en curso | Esperar 20 segundos y repetir |
 | La traza dice "INE no respondió; usé el corpus local" | El sitio del INE no respondió desde Cloudflare | Nada: es el plan B previsto, el agente siguió con los boletines conocidos |
 | Hice commit y no cambió nada | El despliegue aún corre o falló | Cloudflare: Worker → Deployments / Builds. Vercel: Deployments. Ver el error |

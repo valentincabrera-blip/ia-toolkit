@@ -8,3 +8,7 @@ GEMINI_API_KEY=
 
 # Clave que se exige para aprobar o rechazar borradores desde el frontend. Inventen una frase.
 CLAVE_APROBACION=cambiar-esta-clave
+
+# Clase 8: la cadena de conexión de tu proyecto en Neon (postgresql://…?sslmode=require). Si falta, el agente
+# busca por palabras en el corpus local en vez de buscar por significado.
+DATABASE_URL=

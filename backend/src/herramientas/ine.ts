@@ -15,7 +15,7 @@ export function urlBoletin(numero: number): string {
 }
 
 /** ¿Existe el PDF número N en el sitio del INE? (sin descargarlo entero) */
-async function existeEnINE(numero: number): Promise<boolean> {
+export async function existeEnINE(numero: number): Promise<boolean> {
   try {
     let r = await fetch(urlBoletin(numero), { method: "HEAD", headers: CABECERAS, signal: AbortSignal.timeout(8000) });
     if (r.status === 405 || r.status === 403) {

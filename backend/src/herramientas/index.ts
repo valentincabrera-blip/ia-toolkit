@@ -1,6 +1,7 @@
 // El registro de herramientas: la lista completa de lo que el agente puede hacer en el mundo.
 // Para agregar una herramienta: crear el archivo (ver _plantilla.ts) y sumarla a esta lista.
 import type { Herramienta, ContextoHerramienta } from "../tipos";
+import { herramientasDelCurso } from "./extra";
 import { herramientaUltimoBoletin, herramientaBoletin } from "./ine";
 import { herramientaMemoria } from "./memoria";
 import { herramientaBuscar } from "./corpus";
@@ -11,6 +12,7 @@ export const herramientas: Herramienta[] = [
   herramientaBuscar,
   herramientaMemoria,
   // ← las herramientas nuevas se agregan aquí
+  ...herramientasDelCurso,   // las que agrega el profesor en cada clase (archivo extra.ts)
 ];
 
 /** Lo que se le declara al modelo: nombre, descripción y parámetros. Sin código. */

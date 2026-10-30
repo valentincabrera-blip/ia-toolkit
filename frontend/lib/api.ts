@@ -14,6 +14,15 @@ export interface Borrador {
 export interface EntradaIndice { id: string; creado: string; titulo: string; estado: Borrador["estado"]; motivo: string; boletin?: number; problemas: number }
 export interface Inventario { nombre: string; equipo: string | null; estado: string; modelo: string; ultimoBoletinVisto: number | null; herramientas: { nombre: string; descripcion: string }[] }
 
+export interface Region {
+  region: string; codigo: string; tasa: number | null; variacion_pp: number | null;
+  tasa_hombres: number | null; tasa_mujeres: number | null; informalidad: number | null; fuente: string; url: string;
+}
+export interface Regiones {
+  trimestre: string; fecha_publicacion: string; boletin: number;
+  nacional: { tasa: number; variacion_pp: number; fuente: string; url: string }; regiones: Region[];
+}
+
 async function pedir<T>(ruta: string, init?: RequestInit): Promise<{ ok: boolean; status: number; datos: T }> {
   const r = await fetch(`${API}${ruta}`, { ...init, headers: { "content-type": "application/json", ...(init?.headers ?? {}) }, cache: "no-store" });
   const datos = (await r.json().catch(() => ({}))) as T;
@@ -28,7 +37,8 @@ export const api = {
   correr: (cuerpo: { forzar?: boolean; boletin?: number } = {}) => pedir<Borrador | { sinNovedad: true; motivo: string; traza: Paso[] } | { error: string }>("/correr", { method: "POST", body: JSON.stringify(cuerpo) }),
   decidir: (accion: "aprobar" | "rechazar", id: string, nombre: string, clave: string) =>
     pedir<{ ok?: boolean; error?: string }>(`/${accion}`, { method: "POST", body: JSON.stringify({ id, nombre }), headers: { "x-clave": clave } }),
-  preguntar: (pregunta: string) => pedir<{ respuesta: string; fuentes: string[]; modelo: string; traza: Paso[] } | { error: string }>("/preguntar", { method: "POST", body: JSON.stringify({ pregunta }) }),
+  preguntar: (pregunta: string) => pedir<{ respuesta: string; fuentes: string[]; modelo: string; via?: "vector" | "local" | "tabla" | null; traza: Paso[] } | { error: string }>("/preguntar", { method: "POST", body: JSON.stringify({ pregunta }) }),
+  regiones: () => pedir<Regiones | { error: string }>("/regiones"),
 };
 
 export const fecha = (iso?: string) => (iso ? new Date(iso).toLocaleString("es-CL", { timeZone: "America/Santiago", dateStyle: "medium", timeStyle: "short" }) : "");

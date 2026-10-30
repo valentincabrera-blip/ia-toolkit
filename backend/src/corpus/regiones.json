@@ -1,0 +1,191 @@
+{
+ "trimestre": "junio-agosto 2026",
+ "fecha_publicacion": "2026-09-30",
+ "boletin": 335,
+ "origen": "Cifras copiadas de los 16 boletines regionales de la ENE del INE (30-09-2026), una URL por fila; tasa, hombres, mujeres y variación cruzadas con la serie oficial indicadores_principales_reg_sex.xlsx del INE. Informalidad desde los PDF. Revisado el 27-10-2026.",
+ "serie_excel": "https://www.ine.gob.cl/docs/default-source/ocupacion-y-desocupacion/cuadros-estadisticos/series-vigentes/indicadores_principales_reg_sex.xlsx",
+ "nacional": {
+  "tasa": 9.6,
+  "variacion_pp": 1.0,
+  "fuente": "INE, Boletín ENE n.º 335, 30-09-2026",
+  "url": "https://www.ine.gob.cl/docs/default-source/ocupacion-y-desocupacion/boletines/2026/nacional/ene-nacional-335.pdf"
+ },
+ "regiones": [
+  {
+   "region": "Arica y Parinacota",
+   "codigo": "AP",
+   "tasa": 9.4,
+   "variacion_pp": 2.7,
+   "tasa_hombres": 10.2,
+   "tasa_mujeres": 8.4,
+   "informalidad": 31.6,
+   "fuente": "INE, Boletín estadístico: empleo trimestral, región Arica y Parinacota, edición n° 198, 30 de septiembre de 2026",
+   "url": "https://regiones.ine.gob.cl/documentos/default-source/region-xv/estadisticas/ocupacion-y-desocupacion/boletines/2026/encuesta-nacional-de-empleo---ene-periodo-junio---agosto-2026.pdf"
+  },
+  {
+   "region": "Tarapacá",
+   "codigo": "TA",
+   "tasa": 7.8,
+   "variacion_pp": 0.8,
+   "tasa_hombres": 7.5,
+   "tasa_mujeres": 8.2,
+   "informalidad": 30.6,
+   "fuente": "INE, Boletín estadístico: empleo trimestral, región Tarapacá, edición n° 198, 30 de septiembre de 2026",
+   "url": "https://regiones.ine.gob.cl/documentos/default-source/region-i/estadisticas/ocupacion-y-desocupacion/boletines/2026/informe-de-empleo-junio---agosto-2026.pdf"
+  },
+  {
+   "region": "Antofagasta",
+   "codigo": "AN",
+   "tasa": 6.3,
+   "variacion_pp": -0.4,
+   "tasa_hombres": 5.5,
+   "tasa_mujeres": 7.5,
+   "informalidad": 20.9,
+   "fuente": "INE, Boletín estadístico: empleo trimestral, región Antofagasta, edición n° 136, 30 de septiembre de 2026",
+   "url": "https://regiones.ine.gob.cl/documentos/default-source/region-ii/estadistica/ocupacion-y-desocupacion/boletines/2026/empleo-trimestre-m%c3%b3vil-junio---agosto-2026.pdf"
+  },
+  {
+   "region": "Atacama",
+   "codigo": "AT",
+   "tasa": 9.5,
+   "variacion_pp": 0.2,
+   "tasa_hombres": 8.5,
+   "tasa_mujeres": 10.7,
+   "informalidad": 27.9,
+   "fuente": "INE, Boletín estadístico: empleo trimestral, región Atacama, edición n° 198, 30 de septiembre de 2026",
+   "url": "https://regiones.ine.gob.cl/documentos/default-source/region-iii/estadisticas/ocupacion-y-desocupacion/boletines/2026/ene---per%c3%adodo-junio---agosto-2026.pdf"
+  },
+  {
+   "region": "Coquimbo",
+   "codigo": "CO",
+   "tasa": 9.4,
+   "variacion_pp": 1.8,
+   "tasa_hombres": 9.0,
+   "tasa_mujeres": 9.8,
+   "informalidad": 28.1,
+   "fuente": "INE, Boletín estadístico: empleo trimestral, región Coquimbo, edición n° 246, 30 de septiembre de 2026",
+   "url": "https://regiones.ine.gob.cl/documentos/default-source/region-iv/estadisticas/ocupacion-y-desocupacion/boletines/2026/bolet%c3%adn-empleo-junio---agosto-2026.pdf"
+  },
+  {
+   "region": "Valparaíso",
+   "codigo": "VS",
+   "tasa": 10.2,
+   "variacion_pp": 1.4,
+   "tasa_hombres": 9.3,
+   "tasa_mujeres": 11.4,
+   "informalidad": 28.6,
+   "fuente": "INE, Boletín estadístico: empleo trimestral, región Valparaíso, edición n° 124, 30 de septiembre de 2026",
+   "url": "https://regiones.ine.gob.cl/documentos/default-source/region-v/estadisticas/ocupacion-y-desocupacion/boletines/2026/bolet%c3%adn-empleo-regional-trimestre-m%c3%b3vil-junio---agosto-2026.pdf"
+  },
+  {
+   "region": "Metropolitana",
+   "codigo": "RM",
+   "tasa": 9.8,
+   "variacion_pp": 0.9,
+   "tasa_hombres": 9.4,
+   "tasa_mujeres": 10.2,
+   "informalidad": 23.4,
+   "fuente": "INE, Boletín estadístico: empleo trimestral, región Metropolitana de Santiago, edición n° 123, 30 de septiembre de 2026",
+   "url": "https://www.ine.gob.cl/docs/default-source/ocupacion-y-desocupacion/boletines/2026/rm/ene-rm-123.pdf"
+  },
+  {
+   "region": "O'Higgins",
+   "codigo": "LI",
+   "tasa": 10.8,
+   "variacion_pp": 2.2,
+   "tasa_hombres": 9.1,
+   "tasa_mujeres": 13.2,
+   "informalidad": 29.4,
+   "fuente": "INE, Boletín estadístico: empleo trimestral, región Libertador General Bernardo O'Higgins, edición n° 186, 30 de septiembre de 2026",
+   "url": "https://regiones.ine.gob.cl/documentos/default-source/region-vi/estadisticas/ocupacion-y-desocupacion/boletines/2026/bolet%c3%adn-regional-trimestre-m%c3%b3vil-junio-2026---julio-2026---agosto-2026.pdf"
+  },
+  {
+   "region": "Maule",
+   "codigo": "ML",
+   "tasa": 9.5,
+   "variacion_pp": 1.6,
+   "tasa_hombres": 8.5,
+   "tasa_mujeres": 10.7,
+   "informalidad": 30.6,
+   "fuente": "INE, Boletín estadístico: empleo trimestral, región Maule, edición n° 91, 30 de septiembre de 2026",
+   "url": "https://regiones.ine.gob.cl/documentos/default-source/region-vii/estadisticas/ocupacion-y-desocupacion/boletines/2026/informe-empleo-junio-agosto-2026.pdf"
+  },
+  {
+   "region": "Ñuble",
+   "codigo": "NB",
+   "tasa": 11.2,
+   "variacion_pp": 1.1,
+   "tasa_hombres": 10.5,
+   "tasa_mujeres": 12.0,
+   "informalidad": 32.2,
+   "fuente": "INE, Boletín estadístico: empleo trimestral, región Ñuble, edición n° 93, 30 de septiembre de 2026",
+   "url": "https://regiones.ine.gob.cl/documentos/default-source/region-xvi/estadisticas/ocupacion-y-desocupacion/boletines/2026/bolet%c3%adn-empleo-regional-trimestre-m%c3%b3vil-junio---agosto-2026.pdf"
+  },
+  {
+   "region": "Biobío",
+   "codigo": "BI",
+   "tasa": 10.7,
+   "variacion_pp": 0.8,
+   "tasa_hombres": 10.3,
+   "tasa_mujeres": 11.1,
+   "informalidad": 27.9,
+   "fuente": "INE, Boletín estadístico: empleo trimestral, región Biobío, edición n° 198, 30 de septiembre de 2026",
+   "url": "https://regiones.ine.cl/documentos/default-source/region-viii/estadisticas/ocupacion-y-desocupacion/boletines/2026/bolet%c3%adn-empleo-biob%c3%ado-trimestre-m%c3%b3vil-junio-agosto-2026.pdf"
+  },
+  {
+   "region": "La Araucanía",
+   "codigo": "AR",
+   "tasa": 10.1,
+   "variacion_pp": 0.8,
+   "tasa_hombres": 9.8,
+   "tasa_mujeres": 10.5,
+   "informalidad": 33.3,
+   "fuente": "INE, Boletín estadístico: empleo trimestral, región La Araucanía, edición n° 198, 30 de septiembre de 2026",
+   "url": "https://regiones.ine.gob.cl/documentos/default-source/region-ix/estadisticas/ocupacion-y-desocupacion/boletines/2026/boletin-empleo-jja2026.pdf"
+  },
+  {
+   "region": "Los Ríos",
+   "codigo": "LR",
+   "tasa": 10.2,
+   "variacion_pp": 1.1,
+   "tasa_hombres": 9.9,
+   "tasa_mujeres": 10.6,
+   "informalidad": 32.3,
+   "fuente": "INE, Boletín estadístico: empleo trimestral, región Los Ríos, edición n° 209, 30 de septiembre de 2026",
+   "url": "https://regiones.ine.gob.cl/documentos/default-source/region-xiv/estadisticas/ocupacion-y-desocupacion/boletines/2026/bolet%c3%adn-empleo-trimestre-m%c3%b3vil-junio---agosto-2026.pdf"
+  },
+  {
+   "region": "Los Lagos",
+   "codigo": "LL",
+   "tasa": 7.8,
+   "variacion_pp": 2.8,
+   "tasa_hombres": 7.7,
+   "tasa_mujeres": 7.9,
+   "informalidad": 26.4,
+   "fuente": "INE, Boletín estadístico: empleo trimestral, región Los Lagos, edición n° 293, 30 de septiembre de 2026",
+   "url": "https://regiones.ine.gob.cl/documentos/default-source/region-x/estadisticas/ocupacion-y-desocupacion/boletines/2026/ene---periodo-junio---agosto-2026.pdf"
+  },
+  {
+   "region": "Aysén",
+   "codigo": "AI",
+   "tasa": 4.0,
+   "variacion_pp": -0.3,
+   "tasa_hombres": 4.0,
+   "tasa_mujeres": 4.0,
+   "informalidad": 27.5,
+   "fuente": "INE, Boletín estadístico: empleo trimestral, región Aysén del General Carlos Ibáñez del Campo, edición n° 197, 30 de septiembre de 2026",
+   "url": "https://regiones.ine.gob.cl/documentos/default-source/region-xi/estadisticas/ocupacion-y-desocupacion/boletines/2026/bolet%c3%adn-empleo-regi%c3%b3n-de-ays%c3%a9n-trimestre-m%c3%b3vil-junio---agosto-2026.pdf"
+  },
+  {
+   "region": "Magallanes",
+   "codigo": "MA",
+   "tasa": 6.9,
+   "variacion_pp": 0.7,
+   "tasa_hombres": 6.1,
+   "tasa_mujeres": 7.9,
+   "informalidad": 20.9,
+   "fuente": "INE, Boletín estadístico: empleo trimestral, región Magallanes y de la Antártica Chilena, edición n° 198, 30 de septiembre de 2026",
+   "url": "https://regiones.ine.gob.cl/documentos/default-source/region-xii/estadisticas/ocupacion-y-desocupacion/boletines/2026/emp_jja_2026_(3-0).pdf"
+  }
+ ]
+}

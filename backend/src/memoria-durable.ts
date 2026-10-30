@@ -53,6 +53,11 @@ export class Memoria extends DurableObject<Env> {
     return filas[0] ? (JSON.parse(filas[0].json) as Borrador) : null;
   }
 
+  /** Los 30 borradores más recientes, completos (para /exportar.csv). */
+  leerBorradoresCompletos(): Borrador[] {
+    return this.sql.exec<{ json: string }>(`SELECT json FROM borradores ORDER BY creado DESC LIMIT 30`).toArray().map((f) => JSON.parse(f.json) as Borrador);
+  }
+
   /** Los 30 borradores más recientes, sin la traza (solo lo que muestra el índice). */
   listarBorradores(): EntradaIndice[] {
     const filas = this.sql.exec<{ id: string; creado: string; estado: string; titulo: string; motivo: string; boletin: number | null; problemas: number }>(

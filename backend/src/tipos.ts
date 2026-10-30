@@ -5,23 +5,13 @@ import type { Memoria } from "./memoria-durable";
 export interface Env {
   MEMORIA: DurableObjectNamespace<Memoria>; // la memoria del agente (Durable Object con SQLite)
   AI: Ai;                          // Workers AI: convierte el PDF del INE a texto
-  CORPUS?: AiSearchBinding;        // clase 8: el RAG gestionado (AI Search). Si no existe, se usa el corpus local
   GEMINI_API_KEY?: string;         // secreto
   CLAVE_APROBACION?: string;       // secreto
+  DATABASE_URL?: string;           // secreto (clase 8): la cadena de conexión a Neon, donde vive el RAG propio
   NOMBRE_EQUIPO?: string;
   GEMINI_MODELOS?: string;         // lista separada por comas, en orden de preferencia
   MAX_PASOS?: string;
   MOTOR?: string;                  // "propio" (el bucle de bucle.ts) o "adk" (Google ADK, motor-adk.ts)
-}
-
-/** Forma mínima del binding de AI Search que usamos (search devuelve trozos con puntaje y origen). */
-export interface AiSearchBinding {
-  get(nombre: string): {
-    search(opciones: {
-      query: string;
-      ai_search_options?: { retrieval?: { max_num_results?: number } ; query_rewrite?: { enabled?: boolean } };
-    }): Promise<{ chunks: Array<{ id: string; score: number; text: string; item?: { key?: string } }> }>;
-  };
 }
 
 /** Una herramienta: algo que el agente puede pedir que se ejecute. El modelo no la ejecuta; el programa sí. */

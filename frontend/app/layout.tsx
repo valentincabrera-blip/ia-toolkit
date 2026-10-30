@@ -23,6 +23,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <Link href="/">La nota</Link>
               <Link href="/preguntar">Preguntar</Link>
               <Link href="/borradores">Borradores</Link>
+              <Link href="/mapa">Mapa</Link>
               <Link href="/transparencia">Transparencia</Link>
             </nav>
           </div>

@@ -9,6 +9,7 @@
 //   "adk"    → el Agent Development Kit de Google (motor-adk.ts), con las mismas herramientas y la misma traza.
 import objetivo from "./objetivo.md";
 import procedimiento from "./skills/respuesta-ene.md";
+import procedimientoRegiones from "./skills/regiones.md";   // clase 8: lo agrega el curso
 import type { Borrador, Cifra, Env, Herramienta, PasoTraza } from "../tipos";
 import { declaraciones, ejecutarHerramienta, herramientas } from "../herramientas";
 import { anotarBoletinVisto, guardarBorrador, leerUltimoBoletinVisto } from "../herramientas/memoria";
@@ -139,7 +140,7 @@ export async function correrAgente(env: Env, op: OpcionesCorrida): Promise<Borra
   ].join("\n");
 
   const r = await ejecutarBucle(env, {
-    instrucciones: `${objetivo}\n\n${procedimiento}`,
+    instrucciones: `${objetivo}\n\n${procedimiento}\n\n${procedimientoRegiones}`,
     encargo,
     lista: herramientas,
     terminales: [ENTREGAR, SIN_NOVEDAD],
@@ -176,11 +177,11 @@ export async function correrAgente(env: Env, op: OpcionesCorrida): Promise<Borra
   return borrador;
 }
 
-/** Responde una pregunta de un lector usando el corpus (con RAG local o AI Search) y la memoria. */
+/** Responde una pregunta de un lector usando el corpus (por palabras o, desde la clase 8, por significado en Neon). */
 export async function responderPregunta(env: Env, pregunta: string) {
-  const lista = herramientas.filter((h) => h.nombre === "buscar_en_boletines" || h.nombre === "consultar_memoria");
+  const lista = herramientas.filter((h) => ["buscar_en_boletines", "consultar_memoria", "tasa_por_region"].includes(h.nombre));
   const r = await ejecutarBucle(env, {
-    instrucciones: `${objetivo}\n\n# Modo pregunta\nAhora no redactas una nota: respondes la pregunta de un lector usando SOLO lo que devuelva buscar_en_boletines. Cita la fuente de cada cifra. Si no consta, dilo y explica qué sí se puede saber. Máximo 120 palabras. Entrega con la herramienta responder.`,
+    instrucciones: `${objetivo}\n\n# Modo pregunta\nAhora no redactas una nota: respondes la pregunta de un lector usando SOLO lo que devuelvan buscar_en_boletines (texto de los boletines) y tasa_por_region (cifras por región). Cita la fuente de cada cifra. Si no consta, dilo y explica qué sí se puede saber. Máximo 120 palabras, en texto plano (sin asteriscos ni otros símbolos de formato). Entrega con la herramienta responder.\n\n${procedimientoRegiones}`,
     encargo: pregunta,
     lista,
     terminales: [RESPONDER],
@@ -192,8 +193,21 @@ export async function responderPregunta(env: Env, pregunta: string) {
     respuesta: String(a.respuesta ?? r.textoLibre ?? (r.error ? `No pude responder: el motor del agente falló (${r.error}).` : "No pude responder en los pasos permitidos.")),
     fuentes: Array.isArray(a.fuentes) ? (a.fuentes as unknown[]).map(String) : [],
     modelo: r.modelo,
+    via: viaDeBusqueda(r.traza),
     traza: r.traza,
   };
+}
+
+/** Cómo buscó el agente: "vector" (por significado), "local" (por palabras), "tabla" (cifra regional exacta) o null. */
+function viaDeBusqueda(traza: PasoTraza[]): "vector" | "local" | "tabla" | null {
+  let tabla = false;
+  for (const p of traza) {
+    const d = p.datos as Array<{ via?: string }> | { region?: string } | undefined;
+    if (p.tipo !== "resultado" || !d) continue;
+    if (Array.isArray(d) && d[0]?.via) return d[0].via === "vector" ? "vector" : "local";
+    if (!Array.isArray(d) && d.region) tabla = true;
+  }
+  return tabla ? "tabla" : null;
 }
 
 /* ───────── utilidades ───────── */

@@ -40,21 +40,30 @@ verificar cada cambio después de que se despliegue.
 
 ```
 backend/
-  wrangler.jsonc                configuración del Worker: nombre, memoria, IA, variables (NOMBRE_EQUIPO, MOTOR), cron, RAG
+  wrangler.jsonc                configuración del Worker: nombre, memoria, IA, variables (NOMBRE_EQUIPO, MOTOR), vistas previas, cron
   src/index.ts                  las rutas HTTP, el servidor MCP en /mcp y el disparador programado
   src/agente/objetivo.md        EL OBJETIVO: qué debe lograr el agente y sus reglas (lo escribe el equipo)
   src/agente/skills/respuesta-ene.md   EL PROCEDIMIENTO (skill): cómo redactar la nota paso a paso
+  src/agente/skills/regiones.md        procedimiento del curso para preguntas por región o comuna (clase 8; no se edita)
   src/agente/bucle.ts           EL BUCLE: modelo decide → herramienta → resultado al contexto → repetir → entregar
   src/agente/motor-adk.ts       el mismo bucle con Google ADK (se activa con MOTOR = "adk")
   src/agente/modelo.ts          la llamada a la API de Gemini (y el modelo simulado)
   src/agente/limites.ts         LOS LÍMITES (guardrails): reglas que revisa el programa, no el modelo
   src/herramientas/index.ts     EL REGISTRO de herramientas: la lista de lo que el agente puede hacer
+  src/herramientas/extra.ts     herramientas que agrega el curso (tasa_por_region); el equipo no lo edita
+  src/herramientas/regiones.ts  tasa_por_region: la cifra de una región, desde la tabla regional
   src/herramientas/ine.ts       obtener_ultimo_boletin / obtener_boletin (descarga el PDF y lo convierte a texto)
-  src/herramientas/corpus.ts    buscar_en_boletines (RAG: local hoy, AI Search en la clase 8)
+  src/herramientas/corpus.ts    buscar_en_boletines (RAG: por significado en Neon si hay DATABASE_URL; si no, por palabras)
   src/herramientas/memoria.ts   la memoria: último boletín visto, borradores, nota publicada, candado
   src/memoria-durable.ts        dónde vive la memoria: un Durable Object con SQLite
   src/herramientas/_plantilla.ts   plantilla para crear una herramienta nueva
-  src/corpus/boletines.json     corpus local: boletines 335, 334, 331 y el glosario del curso
+  src/corpus/boletines.json     corpus local: boletines 335, 334, 331, el regional de la RM y el glosario del curso
+  src/corpus/regiones.json      cifras de las 16 regiones (boletines regionales del INE), cada fila con su URL
+  src/corpus/banco_preguntas.json   las preguntas de prueba del curso (para /evaluar)
+  src/datos/neon.ts             LA BASE DE DATOS (clase 8): Postgres + pgvector en Neon; tablas trozos y tasas_regionales
+  src/datos/embeddings.ts       los vectores: gemini-embedding-001, 768 números por texto
+  src/datos/indexar.ts          /indexar: trocea, vectoriza y guarda; carga las regiones
+  src/rutas-datos.ts            las rutas de la clase 8: /indexar, /regiones, /evaluar, /exportar.csv
   src/mcp.ts                    el servidor MCP: ultima_tasa, buscar_en_boletines, estado_del_agente
 frontend/
   lib/marca.ts                  nombre, lema, equipo y declaración corta (lo edita el equipo)
@@ -64,6 +73,7 @@ frontend/
   app/borradores/page.tsx       la mesa de edición: aprobar o rechazar con nombre y clave
   app/preguntar/page.tsx        preguntas de lectores (RAG) con fuentes y traza
   app/transparencia/page.tsx    declaración de uso de IA + estado del agente en vivo
+  app/mapa/page.tsx             mapa regional (esqueleto para la clase 9; textos [ … ] del equipo)
 docs/                           guías del curso (paso a paso, flujo Git, Jules, clase 8)
 .github/                        CI "Verificar" y plantillas de issue y pull request
 ```
@@ -81,7 +91,7 @@ docs/                           guías del curso (paso a paso, flujo Git, Jules,
   silencio.
 - No tomes decisiones editoriales por ellos: el objetivo, las reglas, la marca y los textos son del equipo.
   Propón, no impongas.
-- No te adelantes al calendario (ver abajo): no actives el cron ni AI Search salvo que lo pidan.
+- No te adelantes al calendario (ver abajo): no actives el cron ni indexes en Neon salvo que lo pidan.
 
 ## Para Jules (y cualquier agente que trabaje en una máquina virtual)
 
@@ -114,7 +124,14 @@ el modelo la pidió. Si el modelo no la usa, el problema suele ser la descripci�
 **Leer qué hizo el agente** → la traza está en cada borrador (`<backend>/borradores/<id>` o en el frontend).
 Cada paso dice si habló el modelo, si pidió una herramienta, qué devolvió y qué dijeron los límites.
 
-**Conectar el servidor MCP de este agente a Claude Code (clase 8)** → agregar en `.mcp.json` una entrada
+**El RAG propio (clase 8)** → el estudiante crea un proyecto en Neon y guarda la cadena de conexión como el
+secreto `DATABASE_URL` en Cloudflare (tú nunca la ves). Luego abre `<backend>/indexar?clave=<CLAVE_APROBACION>`:
+crea las tablas, trocea y vectoriza el corpus y carga las regiones. `GET /` dice `rag: "vector"` cuando funciona.
+Regla: **las cifras regionales salen de `tasas_regionales` (herramienta `tasa_por_region`); el texto, de
+`trozos` (`buscar_en_boletines`)**. Para comparar búsquedas: `/evaluar?via=local` y `/evaluar?via=vector`.
+Sin `DATABASE_URL` todo sigue funcionando por palabras.
+
+**Conectar el servidor MCP de este agente a Claude Code** → agregar en `.mcp.json` una entrada
 `{"type": "http", "url": "<URL del backend>/mcp"}` y reiniciar la sesión.
 
 ## Probar en local (opcional, solo si alguien tiene Node instalado)
@@ -126,8 +143,9 @@ simulado. La memoria local queda en `backend/.wrangler/state` y sobrevive a rein
 ## Calendario del curso (para no adelantarse)
 
 - Clase 7 (23 oct): fork, despliegue conectado a Git, leer la traza; editar el objetivo; primera tarea a Jules.
-- Clase 8 (30 oct): activar el cron; subir los PDF a R2 y crear AI Search en el panel; descomentar `ai_search`
-  en `wrangler.jsonc`; conectar el `/mcp` propio y el de otro equipo. Ver `docs/CLASE_8.md`.
+- Clase 8 (30 oct): Sync fork; base de datos propia en Neon (`DATABASE_URL`) y `/indexar`; búsqueda por
+  significado vs. por palabras (`/evaluar`); cifras regionales; activar el cron. Ver `docs/CLASE_8.md` y
+  `docs/PASO_A_PASO_CLASE_8.md`. El mapa (`/mapa`) es de la clase 9: no lo anuncies antes.
 - Clase 9 (6 nov): ampliar `limites.ts`; flujo borrador → aprobación → publicación; red teaming.
 - Clase 10 (13 nov): página de transparencia completa; README del equipo; defensa.
 

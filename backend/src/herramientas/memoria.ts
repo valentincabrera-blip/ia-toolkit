@@ -23,6 +23,10 @@ export async function guardarBorrador(env: Env, b: Borrador): Promise<void> {
   await memoria(env).guardarBorrador(b);
 }
 
+export async function leerBorradoresCompletos(env: Env): Promise<Borrador[]> {
+  return memoria(env).leerBorradoresCompletos();
+}
+
 export async function listarBorradores(env: Env): Promise<EntradaIndice[]> {
   return memoria(env).listarBorradores();
 }

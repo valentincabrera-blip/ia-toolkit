@@ -62,6 +62,6 @@
   //    corra solo todos los días a las 09:30 de Chile (12:30 UTC).
   // "triggers": { "crons": ["30 12 * * *"] },
 
-  // ── Clase 8: el RAG en producción. Descomentar cuando exista la instancia de AI Search en el panel.
-  // "ai_search": [{ "binding": "CORPUS", "instance_name": "boletines-ene" }]
+  // ── Clase 8: el RAG propio vive en Neon; la cadena de conexión es el secreto DATABASE_URL (no va aquí).
+  //    Se agrega en el panel de Cloudflare, igual que GEMINI_API_KEY. Ver docs/PASO_A_PASO_CLASE_8.md.
 }

@@ -8,6 +8,7 @@ import { correrAgente, motorActivo, responderPregunta } from "./agente/bucle";
 import { herramientas } from "./herramientas";
 import { leerBorrador, leerNotaPublicada, leerUltimoBoletinVisto, listarBorradores, guardarBorrador, publicarNota, soltarCandado, tomarCandado } from "./herramientas/memoria";
 import { crearServidorMcp } from "./mcp";
+import { estadoRag, registrarRutasDatos, RUTAS_DATOS } from "./rutas-datos";
 
 // La clase de la memoria (Durable Object) tiene que exportarse desde aquí para que Cloudflare la encuentre.
 export { Memoria } from "./memoria-durable";
@@ -19,7 +20,7 @@ app.use("*", cors({ origin: "*", allowHeaders: ["content-type", "x-clave"], allo
 
 /** Salud e inventario: qué es este agente y qué sabe hacer. */
 app.get("/", async (c) => {
-  const visto = await leerUltimoBoletinVisto(c.env);
+  const [visto, rag] = await Promise.all([leerUltimoBoletinVisto(c.env), estadoRag(c.env)]);
   return c.json({
     nombre: "Agente ENE",
     equipo: c.env.NOMBRE_EQUIPO ?? null,
@@ -27,6 +28,7 @@ app.get("/", async (c) => {
     motor: motorActivo(c.env),
     modelo: c.env.GEMINI_API_KEY ? (c.env.GEMINI_MODELOS ?? "gemini").split(",")[0] : "simulado (sin clave de Gemini)",
     ultimoBoletinVisto: visto,
+    ...rag,
     herramientas: herramientas.map((h) => ({ nombre: h.nombre, descripcion: h.descripcion })),
     rutas: {
       "GET /": "este inventario",
@@ -39,6 +41,7 @@ app.get("/", async (c) => {
       "GET /nota": "la nota publicada",
       "POST /preguntar": "responde una pregunta con el corpus. Cuerpo: { pregunta }",
       "POST /mcp": "servidor MCP (herramientas para otros agentes)",
+      ...RUTAS_DATOS,
     },
   });
 });
@@ -98,12 +101,15 @@ async function decidir(c: { env: Env; req: { json(): Promise<unknown>; header(n:
 app.post("/aprobar", async (c) => { const r = await decidir(c, "aprobado"); return c.json(r.cuerpo, r.codigo); });
 app.post("/rechazar", async (c) => { const r = await decidir(c, "rechazado"); return c.json(r.cuerpo, r.codigo); });
 
-/** Preguntas de lectores: RAG (local hoy, AI Search en la clase 8) + modelo. */
+/** Preguntas de lectores: RAG (por palabras, o por significado en Neon desde la clase 8) + modelo. */
 app.post("/preguntar", async (c) => {
   const { pregunta } = (await c.req.json().catch(() => ({}))) as { pregunta?: string };
   if (!pregunta || pregunta.trim().length < 4) return c.json({ error: "Falta la pregunta." }, 400);
   return c.json(await responderPregunta(c.env, pregunta.trim().slice(0, 500)));
 });
+
+// Clase 8: indexar, regiones, evaluar y exportar (ver rutas-datos.ts).
+registrarRutasDatos(app);
 
 app.notFound((c) => c.json({ error: "Esa ruta no existe. GET / muestra las rutas disponibles." }, 404));
 app.onError((e, c) => c.json({ error: e.message }, 500));
